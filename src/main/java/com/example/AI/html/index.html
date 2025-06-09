@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Route & Intersection Points Viewer</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+
+  <!-- Leaflet Draw CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw/dist/leaflet.draw.css" />
+
+  <style>
+    body { margin: 0; padding: 10px; font-family: Arial, sans-serif; }
+    #map { height: 60vh; width: 100%; margin: 10px 0; }
+
+    .controls {
+      margin: 10px 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #007cba;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    button:hover { background-color: #005a87; }
+
+    .route-btn {
+      background-color: #0066ff;
+    }
+
+    .route-btn:hover {
+      background-color: #0052cc;
+    }
+
+    .save-btn {
+      background-color: #28a745;
+    }
+
+    .save-btn:hover {
+      background-color: #218838;
+    }
+
+    .clear-btn {
+      background-color: #dc3545;
+    }
+
+    .clear-btn:hover {
+      background-color: #c82333;
+    }
+
+    .warning-btn {
+      background-color: #fd7e14;
+    }
+
+    .warning-btn:hover {
+      background-color: #e8590c;
+    }
+
+    .info {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-left: 4px solid #007cba;
+      margin: 10px 0;
+    }
+
+    .route-info {
+      background-color: #e3f2fd;
+      border-left: 4px solid #0066ff;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .stats {
+      display: flex;
+      gap: 20px;
+      margin: 10px 0;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background-color: #e9ecef;
+      padding: 8px 12px;
+      border-radius: 4px;
+      min-width: 120px;
+    }
+
+    .route-stat {
+      background-color: #e3f2fd;
+      border: 1px solid #0066ff;
+    }
+
+    .selection-info {
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+
+    .selection-controls {
+      margin: 10px 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .legend {
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      padding: 10px;
+      border-radius: 4px;
+      margin: 10px 0;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin: 5px 0;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      margin-right: 10px;
+      border: 2px solid #fff;
+      box-shadow: 0 0 0 1px #ccc;
+    }
+
+    .legend-line {
+      width: 30px;
+      height: 3px;
+      margin-right: 10px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <button onclick="loadIntersectionFile()">Tải Intersections</button>
+  <button class="route-btn" onclick="loadRouteFile()">Tải Route</button>
+  <button class="clear-btn" onclick="clearMarkers()">Xóa Intersections</button>
+  <button class="clear-btn" onclick="clearRoute()">Xóa Route</button>
+  <button class="warning-btn" onclick="clearAll()">Xóa tất cả</button>
+  <button onclick="saveBoundsToFile()">Lưu bounds</button>
+</div>
+<div class="stats">
+  <div class="stat-item">
+    <strong>Intersection Points:</strong> <span id="totalPoints">0</span>
+  </div>
+  <div class="stat-item">
+    <strong>Cặp tọa độ:</strong> <span id="coordinatePairs">0</span>
+  </div>
+  <div class="stat-item route-stat">
+    <strong>Route Points:</strong> <span id="routePoints">0</span>
+  </div>
+</div>
+
+<div class="selection-info">
+  <strong>Marker đã chọn:</strong>
+  <div id="selectedMarkers">Chưa chọn marker nào</div>
+</div>
+
+<div class="selection-controls">
+  <button class="save-btn" onclick="saveSelectedCoordinates()">Lưu tọa độ</button>
+  <button class="clear-btn" onclick="clearSelection()">Xóa lựa chọn</button>
+</div>
+
+<div id="map"></div>
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+
+<!-- Leaflet Draw JS -->
+<script src="https://unpkg.com/leaflet-draw/dist/leaflet.draw.js"></script>
+
+<!-- App logic -->
+<script src="visual.js"></script>
+
+</body>
+</html>
