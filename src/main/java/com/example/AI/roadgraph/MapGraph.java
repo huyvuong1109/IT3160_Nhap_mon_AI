@@ -125,8 +125,60 @@ public class MapGraph {
 	public List<GeographicPoint> dijkstra(GeographicPoint start,
 										  GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
+		HashSet<MapNode> visited = new HashSet<MapNode>();
+		PriorityQueue<MapNode> priorityQueue = new PriorityQueue<>();
+		HashMap<MapNode, MapNode> parent = new HashMap<MapNode, MapNode>();
 
+		Integer inf = Integer.MAX_VALUE;
+		boolean pathFound = false;
+		MapNode startNode = intersections.get(start);
+		MapNode goalNode = intersections.get(goal);
+		for (GeographicPoint location: intersections.keySet()) {
+			intersections.get(location).setDistance(inf.doubleValue());
+		}
+		intersections.get(start).setDistance(0.0);
+		priorityQueue.add(startNode);
+
+		int count = 0;
+
+		while (!priorityQueue.isEmpty()) {
+
+			MapNode currentNode = priorityQueue.poll();
+			count++;
+
+			nodeSearched.accept(currentNode.getLocation());
+
+			if (!visited.contains(currentNode)) {
+				visited.add(currentNode);
+
+
+				if (currentNode.toString().equals(goalNode.toString())) {
+					pathFound = true;
+					break;
+				}
+
+				for (MapEdge road: currentNode.getRoadList()) {
+					MapNode neighbor = intersections.get(road.getEndPoint());
+					// Ensure visit only to non-visited nodes
+					if (!visited.contains(neighbor)) {
+						Double minDist = currentNode.getDistance() + road.getLength();
+						if (minDist < neighbor.getDistance()) {
+							// Update neighbor's distance
+							neighbor.setDistance(minDist);
+							parent.put(neighbor, currentNode);
+							// enqueue neighbor in priorityQueue
+							priorityQueue.add(neighbor);
+						}
+
+					}
+				}
+			}
+
+		}
+		System.out.println("Dijkstra total No. of Node-visited: " + count);
+		return getPath(startNode, goalNode, parent, pathFound);
 	}
+
 	public List<GeographicPoint> aStarSearch(GeographicPoint start, GeographicPoint goal) {
 		// Dummy variable for calling the search algorithms
 		Consumer<GeographicPoint> temp = (x) -> {};
