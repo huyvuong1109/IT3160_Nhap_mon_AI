@@ -84,7 +84,44 @@ public class MapGraph {
 	public List<GeographicPoint> bfs(GeographicPoint start,
 									 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
-		
+
+		Set<MapNode> visited = new HashSet<MapNode>();
+		Queue<MapNode> queue = new LinkedList<MapNode>();
+		Map<MapNode, MapNode> parent = new HashMap<MapNode, MapNode>();
+
+		// initialize pathFound boolean
+		boolean pathFound = false;
+
+		MapNode startNode = intersections.get(start);
+		MapNode goalNode = intersections.get(goal);
+
+		// Add start node to Queue and Set
+		queue.add(startNode);
+		visited.add(startNode);
+
+		while (!queue.isEmpty()) {
+			MapNode currentNode = queue.poll();
+			// Hook for visualization.  See writeup.
+			nodeSearched.accept(currentNode.getLocation());
+
+			// break the loop and set pathFound to true if we reach to the goal
+			if (currentNode.toString().equals(goalNode.toString())) {
+				pathFound = true;
+				break;
+			}
+
+			for (MapNode neighbor: currentNode.getNeighbors()) {
+				// Ensure visit only to non-visited nodes
+				if (!visited.contains(neighbor)) {
+					visited.add(neighbor);
+					parent.put(neighbor, currentNode);
+					queue.add(neighbor);
+				}
+			}
+
+		}
+
+		return getPath(startNode, goalNode, parent, pathFound);
 	}
 	private List<GeographicPoint> getPath(MapNode start, MapNode goal,
 										  Map<MapNode, MapNode> parent, boolean pathFound) {
