@@ -136,8 +136,73 @@ public class MapGraph {
 	public List<GeographicPoint> aStarSearch(GeographicPoint start,
 											 GeographicPoint goal, Consumer<GeographicPoint> nodeSearched)
 	{
+		HashSet<MapNode> visited = new HashSet<MapNode>();
+		PriorityQueue<MapNode> priorityQueue = new PriorityQueue<>();
+		HashMap<MapNode, MapNode> parent = new HashMap<MapNode, MapNode>();
 
+		Integer inf = Integer.MAX_VALUE;
+		boolean pathFound = false;
+		MapNode startNode = intersections.get(start);
+		MapNode goalNode = intersections.get(goal);
+
+		// Set all distances and Heuristic Costs to be inf for all intersections
+		for (GeographicPoint location: intersections.keySet()) {
+			//distances.put(intersections.get(location), inf.doubleValue());
+			intersections.get(location).setDistance(inf.doubleValue());
+			// Add HCost for each node from Goal & activate astarFlag to modify compareTo
+			// function of MapNode such that priorityQueue entry will be based on HCost+GCost
+			intersections.get(location).setHCost(goalNode);
+			intersections.get(location).setAstar();
+		}
+
+		// Set distance of start node to 0 and enqueue it
+		intersections.get(start).setDistance(0.0);
+		priorityQueue.add(startNode);
+
+		int count = 0;
+
+		while (!priorityQueue.isEmpty()) {
+			//dequeue node from front of queue
+			MapNode currentNode = priorityQueue.poll();
+			count++;
+			// Hook for visualization.  See writeup.
+			nodeSearched.accept(currentNode.getLocation());
+
+			if (!visited.contains(currentNode)) {
+				visited.add(currentNode);
+
+				//System.out.println("Node-visited: " + currentNode.getLocation());
+				if (currentNode.toString().equals(goalNode.toString())) {
+					pathFound = true;
+					break;
+				}
+
+				for (MapEdge road: currentNode.getRoadList()) {
+					MapNode neighbor = intersections.get(road.getEndPoint());
+					System.out.println("Road-type: " + road.getType());
+					// Ensure visit only to non-visited nodes
+					if (!visited.contains(neighbor)) {
+
+						Double minDist = currentNode.getDistance() + road.getLength();
+
+						if (minDist < neighbor.getDistance()) {
+							// Update neighbor's distance
+							neighbor.setDistance(minDist);
+							parent.put(neighbor, currentNode);
+							// enqueue neighbor in priorityQueue
+							priorityQueue.add(neighbor);
+						}
+
+					}
+				}
+			}
+
+		}
+
+		System.out.println("Astar total No. of Node-visited: " + count);
+		return getPath(startNode, goalNode, parent, pathFound);
 	}
+	
 	public static void saveRouteEachPointPerLine(List<GeographicPoint> route, String filename) {
 		try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
 			for (GeographicPoint point : route) {
