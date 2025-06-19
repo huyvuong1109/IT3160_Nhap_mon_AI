@@ -1,5 +1,14 @@
 # 🎯 Mô hình Tìm đường đi ngắn nhất trên bản đồ
 
+## 👥 Thành viên nhóm
+
+Vũ Quốc Bảo - 20225694
+Lê Xuân Cường - 20225797
+Đặng Anh Đức - 20225609
+Vương Quốc Huy - 20225637
+
+---
+
 ## 📌 Mô tả dự án
 
 Đây là một hệ thống mô phỏng tìm đường đi ngắn nhất giữa hai điểm trên bản đồ bằng các thuật toán như:
@@ -58,3 +67,12 @@ git clone https://github.com/huyvuong1109/IT3160_Nhap_mon_AI.git
 * Cho phép tìm đường đi với ràng buộc thời gian thực (tắc đường, sửa đường...)
 * Thêm chức năng tìm đường nhiều điểm dừng (multi-stop route)
 * Cải thiện giao diện người dùng với bản đồ tương tác mạnh hơn
+
+---
+
+## 📚 Tài liệu tham khảo
+
+* Cormen et al., "Introduction to Algorithms", MIT Press
+* [https://www.geeksforgeeks.org/](https://www.geeksforgeeks.org/)
+* [https://viblo.asia/](https://viblo.asia/)
+* Bài giảng môn Nhập môn Trí tuệ nhân tạo – Trường Đại học Bách Khoa Hà Nội
