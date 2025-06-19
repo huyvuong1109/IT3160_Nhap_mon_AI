@@ -2,10 +2,10 @@
 
 ## 👥 Thành viên nhóm
 
-Vũ Quốc Bảo - 20225694
-Lê Xuân Cường - 20225797
-Đặng Anh Đức - 20225609
-Vương Quốc Huy - 20225637
+* Vũ Quốc Bảo - 20225694
+* Lê Xuân Cường - 20225797
+* Đặng Anh Đức - 20225609
+* Vương Quốc Huy - 20225637
 
 ---
 
