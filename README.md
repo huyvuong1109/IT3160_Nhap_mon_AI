@@ -1,4 +1,4 @@
-# 🎯 Mô hình Tìm đường đi ngắn nhất trên bản đồ
+# 🎯 Mô hình Tìm đường đi trên bản đồ thực
 
 ## 👥 Thành viên nhóm
 
